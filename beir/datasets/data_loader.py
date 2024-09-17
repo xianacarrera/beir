@@ -10,16 +10,18 @@ logger = logging.getLogger(__name__)
 class GenericDataLoader:
     
     def __init__(self, data_folder: str = None, prefix: str = None, corpus_file: str = "corpus.jsonl", query_file: str = "queries.jsonl", 
-                 qrels_folder: str = "qrels", qrels_file: str = ""):
+                 qrels_folder: str = "qrels", qrels_file: str = "", use_corpus: bool = True):
         self.corpus = {}
         self.queries = {}
         self.qrels = {}
+        self.use_corpus = use_corpus
         
         if prefix:
             query_file = prefix + "-" + query_file
             qrels_folder = prefix + "-" + qrels_folder
 
-        self.corpus_file = os.path.join(data_folder, corpus_file) if data_folder else corpus_file
+        if self.use_corpus:
+            self.corpus_file = os.path.join(data_folder, corpus_file) if data_folder else corpus_file
         self.query_file = os.path.join(data_folder, query_file) if data_folder else query_file
         self.qrels_folder = os.path.join(data_folder, qrels_folder) if data_folder else None
         self.qrels_file = qrels_file
@@ -34,16 +36,17 @@ class GenericDataLoader:
 
     def load_custom(self) -> Tuple[Dict[str, Dict[str, str]], Dict[str, str], Dict[str, Dict[str, int]]]:
 
-        self.check(fIn=self.corpus_file, ext="jsonl")
+        if self.use_corpus:
+            self.check(fIn=self.corpus_file, ext="jsonl")
         self.check(fIn=self.query_file, ext="jsonl")
         self.check(fIn=self.qrels_file, ext="tsv")
         
-        if not len(self.corpus):
+        if self.use_corpus and not len(self.corpus):
             logger.info("Loading Corpus...")
             self._load_corpus()
             logger.info("Loaded %d Documents.", len(self.corpus))
             logger.info("Doc Example: %s", list(self.corpus.values())[0])
-        
+            
         if not len(self.queries):
             logger.info("Loading Queries...")
             self._load_queries()
