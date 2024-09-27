@@ -4,8 +4,7 @@ from typing import List, Dict
 from tqdm.autonotebook import trange
 
 if importlib.util.find_spec("tensorflow") is not None \
-    and importlib.util.find_spec("tensorflow_hub") is not None \
-    and importlib.util.find_spec("tensorflow_text") is not None:
+    and importlib.util.find_spec("tensorflow_hub") is not None:
     import tensorflow as tf
     import tensorflow_hub as hub
 
