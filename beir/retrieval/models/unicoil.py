@@ -59,9 +59,9 @@ class UniCOIL:
                 non_zero_tokens += len(token_ids_and_embs)
                 passage_embs.append(token_ids_and_embs)
             
-        col = np.zeros(non_zero_tokens, dtype=np.int)
-        row = np.zeros(non_zero_tokens, dtype=np.int)
-        values = np.zeros(non_zero_tokens, dtype=np.float)
+        col = np.zeros(non_zero_tokens, dtype=int)
+        row = np.zeros(non_zero_tokens, dtype=int)
+        values = np.zeros(non_zero_tokens, dtype=float)
         sparse_idx = 0    
         
         for pid, emb in enumerate(passage_embs):
@@ -71,7 +71,7 @@ class UniCOIL:
                 values[sparse_idx] = score
                 sparse_idx += 1
 
-        return csr_matrix((values, (col, row)), shape=(len(sentences), self.bert_input_emb), dtype=np.float)
+        return csr_matrix((values, (col, row)), shape=(len(sentences), self.bert_input_emb), dtype=float)
 
 # class UniCOIL:
 #     def __init__(self, model_path: Union[str, Tuple] = None, sep: str = " ", **kwargs):
