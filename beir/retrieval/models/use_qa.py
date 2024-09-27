@@ -8,7 +8,6 @@ if importlib.util.find_spec("tensorflow") is not None \
     and importlib.util.find_spec("tensorflow_text") is not None:
     import tensorflow as tf
     import tensorflow_hub as hub
-    import tensorflow_text
 
 class UseQA:
     def __init__(self, hub_url=None, **kwargs):
